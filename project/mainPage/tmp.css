@@ -1,0 +1,10 @@
+* {
+    margin: 0
+}
+
+footer .bottomNav {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: aquamarine;
+}
