@@ -10,6 +10,14 @@ body {
 
 }
 
+.MotnhHeaderDiv {
+
+    margin: auto;
+    width: 380px;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
 .calendar {
 
     margin: auto;
@@ -34,37 +42,39 @@ body {
     z-index: 2;
 }
 
-.changeBtn {
+#prev,
+#next {
     width: 20px;
     height: 20px;
     position: relative;
-    top: 50%;
     border: none;
     background: transparent;
     cursor: pointer;
 }
 
-.changeBtn::before {
-    content: '';
+#prev::before,
+#next::before {
+    content: "";
     width: 50%;
     height: 50%;
     position: absolute;
     top: 50%;
     left: 50%;
     border-style: solid;
-    border-width: .25rem .25rem 0 0;
+    border-width: 0.25em 0.25em 0 0;
     border-color: #ccc;
 }
 
-.changeBtn:nth-child(1)::before {
+#next::before {
     transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.changeBtn:nth-child(2)::before {
+#prev::before {
     transform: translate(-50%, -50%) rotate(-135deg);
 }
 
-.changeBtn:hover::before {
+#prev:hover::before,
+#next:hover::before {
     border-color: #000;
 }
 
@@ -93,5 +103,5 @@ body {
 }
 
 .dates li.inactive {
-    color: green;
+    color: #8E8E8E;
 }

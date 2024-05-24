@@ -51,6 +51,7 @@ function renderCalendar() {
     header.textContent = `${months[month]} ${year}`;
 }
 
+
 navs.forEach((nav) => {
     nav.addEventListener("click", (e) => {
         const btnId = e.target.id;
@@ -58,9 +59,11 @@ navs.forEach((nav) => {
         if (btnId === "prev" && month === 0) {
             year--;
             month = 11;
+            console.log('print');
         } else if (btnId === "next" && month === 11) {
             year++;
             month = 0;
+            console.log('next');
         } else {
             month = btnId === "next" ? month + 1 : month - 1;
         }
