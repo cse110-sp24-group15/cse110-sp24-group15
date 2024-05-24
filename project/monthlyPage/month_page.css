@@ -1,0 +1,97 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 2rem;
+    height: 100vh;
+
+}
+
+.calendar {
+
+    margin: auto;
+    width: 380px;
+    padding: 1rem;
+    background: lightblue;
+    border-radius: 10px;
+
+}
+
+.calendar ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.calendar ul li {
+    width: calc(100%/7);
+    margin-top: 25px;
+    position: relative;
+    z-index: 2;
+}
+
+.changeBtn {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 50%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.changeBtn::before {
+    content: '';
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-style: solid;
+    border-width: .25rem .25rem 0 0;
+    border-color: #ccc;
+}
+
+.changeBtn:nth-child(1)::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.changeBtn:nth-child(2)::before {
+    transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+.changeBtn:hover::before {
+    border-color: #000;
+}
+
+
+.days {
+    font-weight: 600;
+}
+
+.dates li .today {
+    color: #fff;
+
+}
+
+.dates li .today::before {
+    content: '';
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #000;
+    border-radius: 50%;
+    z-index: 2;
+
+}
+
+.dates li.inactive {
+    color: green;
+}
