@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+        }
+        header button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        main {
+            flex: 1;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .SubHeaderHomePageDiv {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .ActiveProjectsTitle {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .Search {
+            padding: 5px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .AddProjectPlusBtn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .ProjectsList {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .projects {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .projects li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        .projects li button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .projects li .delete-btn {
+            background-color: red;
+        }
+        .AddProjectDiv, .AddArchiveDiv {
+            margin-top: 20px;
+        }
+        .AddProjectDiv .AddProjectBtn, .AddArchiveDiv .ArchivePageBtn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        footer {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+        }
+        footer button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button>Login</button>
+    </header>
+    <main>
+        <div class="SubHeaderHomePageDiv">
+            <div class="ActiveProjectsTitle">Active Projects</div>
+            <div>
+                <input type="text" class="Search" placeholder="Search projects...">
+                <button class="AddProjectPlusBtn" onclick="location.href='../projects/addProjectPage/add_project_page.html'">+</button>
+            </div>
+        </div>
+        <div class="ProjectsList">
+            <ul class="projects">
+                <li>
+                    Project 1
+                    <div>
+                        <button class="archive-btn">Archive</button>
+                        <button class="delete-btn">Delete</button>
+                    </div>
+                </li>
+                <li>
+                    Project 2
+                    <div>
+                        <button class="archive-btn">Archive</button>
+                        <button class="delete-btn">Delete</button>
+                    </div>
+                </li>
+                <!-- Add more project items as needed -->
+            </ul>
+            <div class="AddProjectDiv">
+                <button class="AddProjectBtn" onclick="location.href='../projects/addProjectPage/add_project_page.html'">Add New Project</button>
+            </div>
+            <div class="AddArchiveDiv">
+                <button class="ArchivePageBtn" onclick="location.href='../projects/archivePage/archive_page.html'">Archive Page</button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <button>Footer Button</button>
+    </footer>
+</body>
+</html>
