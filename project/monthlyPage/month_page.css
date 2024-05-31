@@ -7,9 +7,11 @@
 body {
     padding: 2rem;
     height: 100vh;
+
 }
 
-.MonthHeaderDiv {
+.MotnhHeaderDiv {
+
     margin: auto;
     width: 1000px;
     padding: 1rem;
@@ -17,11 +19,13 @@ body {
 }
 
 .calendar {
+
     margin: auto;
     width: 1000px;
     padding: 2rem;
     background: lightblue;
     border-radius: 10px;
+
 }
 
 .calendar ul {
@@ -32,8 +36,8 @@ body {
 }
 
 .calendar ul li {
-    width: calc(100% / 7);
-    margin-top: 40px;
+    width: calc(100%/7);
+    margin-top: 35px;
     position: relative;
     z-index: 2;
 }
@@ -74,12 +78,14 @@ body {
     border-color: #000;
 }
 
+
 .days {
     font-weight: 600;
 }
 
 .dates li .today {
     color: #fff;
+
 }
 
 .dates li .today::before {
@@ -93,6 +99,7 @@ body {
     background: #000;
     border-radius: 50%;
     z-index: 2;
+
 }
 
 .dates li.inactive {
