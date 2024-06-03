@@ -27,34 +27,29 @@ function renderCalendar() {
     const end = new Date(year, month, endDate).getDay();
     const endDatePrev = new Date(year, month, 0).getDate();
 
-    dates.innerHTML = ""; // Clear previous dates
+    let datesHtml = "";
 
-    // Add dates of previous month
     for (let i = start; i > 0; i--) {
-        const li = document.createElement('li');
-        li.className = 'inactive';
-        li.textContent = endDatePrev - i + 1;
-        dates.appendChild(li);
+        datesHtml += `<li class="inactive">${endDatePrev - i + 1}</li>`;
     }
 
-    // Add dates of current month
     for (let i = 1; i <= endDate; i++) {
-        const li = document.createElement('li');
-        if (i === date.getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
-            li.className = 'today';
-        }
-        li.textContent = i;
-        dates.appendChild(li);
+        let className =
+            i === date.getDate() &&
+                month === new Date().getMonth() &&
+                year === new Date().getFullYear()
+                ? ' class="today"'
+                : "";
+        datesHtml += `<li${className}>${i}</li>`;
     }
 
-    // Add dates of next month
     for (let i = end; i < 6; i++) {
-        const li = document.createElement('li');
-        li.className = 'inactive';
-        li.textContent = i - end + 1;
-        dates.appendChild(li);
+        datesHtml += `<li class="inactive">${i - end + 1}</li>`;
     }
 
+    dates.innerHTML = datesHtml;
+
+    // Use textContent to safely set the header text
     header.textContent = `${months[month]} ${year}`;
 }
 
@@ -65,9 +60,11 @@ navs.forEach((nav) => {
         if (btnId === "prev" && month === 0) {
             year--;
             month = 11;
+            console.log('print');
         } else if (btnId === "next" && month === 11) {
             year++;
             month = 0;
+            console.log('next');
         } else {
             month = btnId === "next" ? month + 1 : month - 1;
         }
