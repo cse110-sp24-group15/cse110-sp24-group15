@@ -27,7 +27,7 @@ function renderCalendar() {
     const end = new Date(year, month, endDate).getDay();
     const endDatePrev = new Date(year, month, 0).getDate();
 
-    dates.innerHTML = "";  // Clear previous dates
+    dates.innerHTML = ""; // Clear previous dates
 
     // Add dates of previous month
     for (let i = start; i > 0; i--) {
