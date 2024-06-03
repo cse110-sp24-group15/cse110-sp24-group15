@@ -13,12 +13,13 @@
   },
   "author": "Jover",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "puppeteer": "^22.10.0"
   },
   "devDependencies": {
     "eslint": "^9.2.0",
-    "prettier": "^3.2.5",
-    "jest": "^27.0.6"
+    "jest": "^27.5.1",
+    "prettier": "^3.2.5"
   },
   "jest": {
     "testMatch": [

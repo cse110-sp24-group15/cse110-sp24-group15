@@ -1,23 +1,42 @@
 // Run the init() function when the page has loaded
-window.addEventListener("DOMContentLoaded", init);
+if(typeof(window) !== "undefined"){
+    window.addEventListener("DOMContentLoaded", init);
+}
 
 function init() {
     calendarScript();
 }
 
 function switchWeekly() {
-    window.location.href = escape("/../project/dummyWeekPage/week.html");
+    if(typeof(window) !== "undefined"){
+        window.location.href = escape("/../weekPage/week_page.html");
+    }
 }
 
 function switchMonthly() {
-    window.location.href = escape("/../project/dummyMonthPage/month.html");
+    if(typeof(window) !== "undefined"){
+        window.location.href = escape("/../project/dummyMonthPage/month.html");
+    }
 }
 
 function redirectToAddLogPage() {
-    window.location.href = escape("/../project/addPage/addPage.html");
+    if(typeof(window) !== "undefined"){
+        window.location.href = escape("/../project/addPage/addPage.html");
+    }
 }
 
-module.exports = {switchWeekly, switchMonthly, redirectToAddLogPage};
+function redirectToDayPage() {
+    if(typeof(window) !== "undefined"){
+        window.location.href = escape("/../project/dayPage/day_page.html");
+    }
+}
+
+function formatDateToMMDDYYYY(date) {
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return `${mm}/${dd}/${yyyy}`;
+}
 
 function calendarScript() {
     const dayDisplay = document.getElementById('day-display');
@@ -34,13 +53,6 @@ function calendarScript() {
     function formatDate(date) {
         const options = { month: 'short', day: 'numeric' };
         return date.toLocaleDateString(undefined, options);
-    }
-
-    function formatDateToMMDDYYYY(date) {
-        const mm = String(date.getMonth() + 1).padStart(2, '0');
-        const dd = String(date.getDate()).padStart(2, '0');
-        const yyyy = date.getFullYear();
-        return `${mm}/${dd}/${yyyy}`;
     }
 
     function getDayOfWeek(date) {
@@ -88,8 +100,8 @@ function calendarScript() {
         const dayCalendarTime = document.getElementById('DayCalendarTime');
 
         // Clear previous events
-        dayCalendarTitle.innerHTML = "Title";
-        dayCalendarTime.innerHTML = "Time";
+        // dayCalendarTitle.innerHTML = "Title";
+        // dayCalendarTime.innerHTML = "Time";
 
         // Display current logs
         jsonObject.forEach(log => {
@@ -123,4 +135,8 @@ function calendarScript() {
     updateCalendar();
     updateEvents(); // Call updateEvents to ensure events are loaded initially
     updatePage();
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { makeSubmission };
 }
