@@ -5,8 +5,10 @@ const path = require('path');
 // Load the HTML file into a JSDOM instance
 const baseDir = path.resolve(__dirname, '../monthlyPage');
 
+const filename = 'month_page.html';
+
 // Resolve and normalize the file path
-const filePath = path.join(baseDir, 'month_page.html');
+const filePath = path.join(baseDir, filename);
 
 // Ensure the file path is within the expected directory
 const normalizedPath = path.normalize(filePath);
