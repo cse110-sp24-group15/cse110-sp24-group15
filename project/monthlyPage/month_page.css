@@ -32,7 +32,7 @@ body {
 }
 
 .calendar ul li {
-    width: calc(100%/7);
+    width: calc(100% / 7);
     margin-top: 35px;
     position: relative;
     z-index: 2;
@@ -78,23 +78,22 @@ body {
     font-weight: 600;
 }
 
-.dates li .today {
-    color: #fff;
-}
 
-.dates li .today::before {
-    content: '';
-    width: 2rem;
-    height: 2rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.dates li.today {
+    color: #fff;
     background: #000;
     border-radius: 50%;
-    z-index: 2;
 }
 
 .dates li.inactive {
     color: #8E8E8E;
+}
+
+.dates li:not(.today):hover {
+    background-color: #f0f0f0;
+    /* Light gray background on hover */
+    color: #000;
+    /* Black text color on hover */
+    border-radius: 50%;
+    /* Same border radius to match the highlight */
 }
