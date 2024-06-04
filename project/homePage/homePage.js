@@ -25,8 +25,21 @@ const dummyProjectData = {
 };
 
 // Initialize the projects data in localStorage
-if (!localStorage.getItem('projectData')) {
+const projectDataString = localStorage.getItem('projectData');
+if (!projectDataString) {
     localStorage.setItem('projectData', JSON.stringify(dummyProjectData));
+} else {
+    try {
+        const projectData = JSON.parse(projectDataString);
+        if (projectData && projectData.project_data) {
+            // Use the validated projectData
+        } else {
+            // Handle invalid projectData
+            console.error('Invalid project data in localStorage');
+        }
+    } catch (error) {
+        console.error('Error parsing project data from localStorage:', error);
+    }
 }
 
 // Function to render the projects list
@@ -87,11 +100,11 @@ function createProjectElement(project, projectId) {
 
     projectElement.appendChild(projectActions);
     projectElement.addEventListener('click', () => {
-        const projectData = JSON.parse(localStorage.getItem('projectData'));
-        projectData.current_project = projectId;
-        projectData.current_date = new Date().toLocaleDateString();
-        localStorage.setItem('projectData', JSON.stringify(projectData));
-        window.location.href = "../projectHomePage/project_home_page.html";
+        const projectDataCopy = { ...JSON.parse(localStorage.getItem('projectData')) };
+        projectDataCopy.current_project = projectId;
+        projectDataCopy.current_date = new Date().toLocaleDateString();
+        localStorage.setItem('projectData', JSON.stringify(projectDataCopy));
+        window.location.href = escape("../projectHomePage/project_home_page.html");
     });
 
     return projectElement;
@@ -99,20 +112,19 @@ function createProjectElement(project, projectId) {
 
 // Function to archive a project
 function archiveProject(projectId) {
-    console.log(projectId);
-    const projectData = JSON.parse(localStorage.getItem('projectData'));
-    projectData.project_data[projectId].active = false;
-    localStorage.setItem('projectData', JSON.stringify(projectData));
+    const projectDataCopy = { ...JSON.parse(localStorage.getItem('projectData')) };
+    projectDataCopy.project_data[projectId].active = false;
+    localStorage.setItem('projectData', JSON.stringify(projectDataCopy));
     renderProjects();
 }
 
 // Function to delete a project
 function deleteProject(projectId) {
-    console.log(projectId);
-    const projectData = JSON.parse(localStorage.getItem('projectData'));
-    delete projectData.project_data[projectId];
-    localStorage.setItem('projectData', JSON.stringify(projectData));
+    const projectDataCopy = { ...JSON.parse(localStorage.getItem('projectData')) };
+    projectDataCopy.project_data[projectId] = undefined;
+    localStorage.setItem('projectData', JSON.stringify(projectDataCopy));
     renderProjects();
 }
+
 // Render the projects on page load
 renderProjects();

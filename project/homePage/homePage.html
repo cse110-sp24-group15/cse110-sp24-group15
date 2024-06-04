@@ -6,7 +6,6 @@
     <title>Project Management App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <script src="homePage.js" defer></script>
 </head>
 <body>
     <header>
@@ -36,20 +35,20 @@
     <footer>
         <button>Footer Button</button>
     </footer>
-</body>
-<script>
-    // Function to search projects
-function searchProjects(searchTerm) {
-    const projectElements = document.querySelectorAll('.projects li');
-    projectElements.forEach(projectElement => {
-        const projectName = projectElement.querySelector('h3').textContent.toLowerCase();
-        if (projectName.includes(searchTerm.toLowerCase())) {
-            projectElement.style.display = 'block';
-        } else {
-            projectElement.style.display = 'none';
+    <script src="homePage.js"></script>
+    <script>
+        // Function to search projects
+        function searchProjects(searchTerm) {
+            const projectElements = document.querySelectorAll('.projects li');
+            projectElements.forEach(projectElement => {
+                const projectName = projectElement.querySelector('h3').textContent.toLowerCase();
+                if (projectName.includes(searchTerm.toLowerCase())) {
+                    projectElement.style.display = 'block';
+                } else {
+                    projectElement.style.display = 'none';
+                }
+            });
         }
-    });
-}
-
-</script>
+    </script>
+</body>
 </html>
