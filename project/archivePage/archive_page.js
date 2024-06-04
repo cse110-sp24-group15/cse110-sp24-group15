@@ -1,242 +1,171 @@
-// Sample data generation
-function generateSampleProjects() {
-    // Array to hold sample projects
-    let sampleProjects = [];
+document.addEventListener('DOMContentLoaded', function () {
+    // Number of projects to display per page
+    const projectsPerPage = 5;
 
-    // Generate 10 sample projects
-    for (let i = 1; i <= 10; i++) {
-        let project = {
-            projectName: `Project ${i}`,
-            projectTag: `Tag ${i}`,
-            projectContributors: `Contributors ${i}`,
-            projectDescription: `Description ${i}`,
-            active: i <= 7 ? false : true, // Set active property based on index
-            logs: {}, // Initialize empty logs object
-            BranchLink: `Link ${i}`,
-            TodoList: {} // Initialize empty TodoList object
-        };
-        sampleProjects.push(project);
+    // Current page number, initially set to 1
+    let currentPage = 1;
+
+    // Array to store the projects
+    let projects = [];
+
+    // Store the initial current page in sessionStorage
+    sessionStorage.setItem('current_page', currentPage);
+
+    // Function to load projects from localStorage, filter them, and store in sessionStorage
+    function loadProjects() {
+        // Retrieve the project_data from localStorage
+        let projData = localStorage.getItem("project_data");
+
+        // Check if projData is null or empty
+        if (projData) {
+            // Parse the project data
+            projData = JSON.parse(projData);
+            
+            // Filter projects to include only non-active ones
+            projects = Object.entries(projData.project_data).filter(([key, project]) => !project.active);
+            
+            // Store the filtered projects in sessionStorage
+            sessionStorage.setItem("archived_projects", JSON.stringify(projects));
+        } else {
+            // If there is no project_data in localStorage, initialize projects to an empty array
+            projects = [];
+            console.log("No projects in local storage");
+        }
+        
+        // Display the projects
+        displayProjects();
     }
 
-    // Create an object to store all projects
-    let projectData = {
-        current_project: "",
-        current_date: "",
-        project_data: {}
-    };
+    // Function to display projects on the page
+    function displayProjects() {
+        // Get the project list container
+        const projectList = document.querySelector('.project-list');
 
-    // Assign sample projects to the project_data object
-    sampleProjects.forEach((project, index) => {
-        projectData.project_data[`project_${index + 1}`] = project;
-    });
+        // Clear the existing project list
+        projectList.innerHTML = '';
 
-    // Convert the project data to a JSON string
-    let projectDataJSON = JSON.stringify(projectData);
+        // Calculate the start and end indices for the current page
+        const start = (currentPage - 1) * projectsPerPage;
+        const end = start + projectsPerPage;
 
-    // Store the project data in localStorage
-    window.localStorage.setItem('projectData', projectDataJSON);
-}
+        // Get the projects for the current page
+        const paginatedProjects = projects.slice(start, end);
 
-// Call the function to generate sample projects
-generateSampleProjects();
+        // Iterate over each project and create a list item for it
+        paginatedProjects.forEach(([key, project]) => {
+            let listItem = document.createElement('li');
+            listItem.classList.add('project');
+            listItem.innerHTML = `
+                <span>${project.projectName}</span>
+                <button class="delete-btn">Delete</button>
+            `;
 
-// Pulling out all active: false projects
-let localStorageData = localStorage.getItem('projectData');
+            // Add event listener for delete button
+            listItem.querySelector('.delete-btn').addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent triggering the project click event
+                deleteProject(key);
+            });
 
-// Checking if localStorage has any projectData
-if (localStorageData) {
-    // Parse the JSON string to an object
-    let projectData = JSON.parse(localStorageData);
+            // Add event listener for project item click
+            listItem.addEventListener('click', () => {
+                let projData = JSON.parse(localStorage.getItem("project_data"));
+                projData.current_project = key;
+                localStorage.setItem('project_data', JSON.stringify(projData));
+                window.location.href = "../projects/projectHomePage/project_home_page.html";
+            });
 
-    // Extract active: false projects
-    let inactiveProjects = Object.entries(projectData.project_data)
-        .filter(([_, project]) => !project.active)
-        .reduce((acc, [key, project]) => {
-            acc[key] = project;
-            return acc;
-        }, {});
-
-    // Convert inactive projects to a JSON string
-    let inactiveProjectsJSON = JSON.stringify(inactiveProjects);
-
-    // Place inactive projects in sessionStorage
-    sessionStorage.setItem('inactiveProjects', inactiveProjectsJSON);
-} else {
-    console.log('No project data found in localStorage.');
-}
-
-// Retrieve project data from session storage
-let sessionStorageData = sessionStorage.getItem('inactiveProjects');
-let projectData = JSON.parse(sessionStorageData);
-
-// Function to populate project list on the current page
-function populateProjectList(pageNumber) {
-    let projectList = document.querySelector('.project-list');
-    projectList.innerHTML = ''; // Clear existing projects
-
-    // Calculate start and end indices for projects on the current page
-    let startIdx = (pageNumber - 1) * 5;
-    let endIdx = Math.min(startIdx + 5, Object.keys(projectData).length);
-
-    // Populate project list with projects from startIdx to endIdx
-    for (let i = startIdx; i < endIdx; i++) {
-        let projectKey = `project_${i + 1}`;
-        let project = projectData[projectKey];
-        addProjectToList(project, projectKey);
+            // Append the list item to the project list
+            projectList.appendChild(listItem);
+        });
     }
-}
 
-// Function to add a single project to the project list
-function addProjectToList(project, projectKey) {
-    // Create list item element
-    let projectListItem = document.createElement('li');
-    projectListItem.classList.add('project');
+    // Function to delete a project
+    function deleteProject(projectKey) {
+        // Remove the project from the projects array
+        projects = projects.filter(([key, project]) => key !== projectKey);
+        
+        // Update sessionStorage with the modified projects array
+        sessionStorage.setItem('archived_projects', JSON.stringify(projects));
 
-    // Set project name
-    projectListItem.textContent = project.projectName;
+        // Retrieve the project data from localStorage
+        let projData = JSON.parse(localStorage.getItem("project_data"));
 
-    // Create delete button
-    let deleteButton = document.createElement('button');
-    deleteButton.classList.add('delete-button');
+        // Delete the project from the project data object
+        delete projData.project_data[projectKey];
 
-    // Create span element for trash can icon
-    let trashIcon = document.createElement('span');
-    trashIcon.innerHTML = '&#128502;';
+        // Update localStorage with the modified project data
+        localStorage.setItem('project_data', JSON.stringify(projData));
 
-    // Append trash icon to delete button
-    deleteButton.appendChild(trashIcon);
-
-    // Append delete button to list item
-    projectListItem.appendChild(deleteButton);
-
-    // Add click event listener to trash icon
-    trashIcon.addEventListener('click', function (event) {
-        event.stopPropagation(); // Stop propagation to prevent the click from reaching the parent elements
-        // Call a function to handle the delete action
-        handleDeleteButtonClick(projectKey);
-    });
-
-    // Add click event listener to project item
-    projectListItem.addEventListener('click', function () {
-        handleProjectClick(projectKey);
-    });
-
-    // Append list item to project list
-    let projectList = document.querySelector('.project-list');
-    projectList.appendChild(projectListItem);
-}
-
-// Function to handle clicking on a project
-function handleProjectClick(projectKey) {
-    // Retrieve project data from localStorage
-    let localStorageData = localStorage.getItem('projectData');
-    if (localStorageData) {
-        let projectData = JSON.parse(localStorageData);
-
-        // Set the current project in localStorage
-        projectData.current_project = projectKey;
-        localStorage.setItem('projectData', JSON.stringify(projectData));
-
-        // Redirect to the project homepage
-window.location.href = '../projects/projectHomePage/project_home_page.html';
-} else {
-    console.log('No project data found in localStorage.');
-}
-}
-
-// Function to handle clicking on the trash icon
-function handleDeleteButtonClick(projectKey) {
-// Ask for confirmation using an alert dialog
-let confirmation = confirm('Are you sure you want to delete this project?');
-
-// Check if the user confirmed the deletion
-if (confirmation) {
-// Perform the delete action here
-deleteProject(projectKey);
-}
-}
-
-// Function to delete the project
-function deleteProject(projectKey) {
-// Implement your logic to delete the project here
-// For example, you can remove the project from the projectData object
-// and then update the UI accordingly
-}
-
-// Function to handle moving to the previous page
-function moveToPreviousPage() {
-// Get the current page number from session storage
-let currentPage = parseInt(sessionStorage.getItem('currentPage')) || 1;
-
-// Move to previous page if not on the first page
-if (currentPage > 1) {
-    currentPage--;
-    sessionStorage.setItem('currentPage', currentPage);
-    populateProjectList(currentPage);
-}
-}
-
-// Function to handle moving to the next page
-function moveToNextPage() {
-// Get the current page number from session storage
-let currentPage = parseInt(sessionStorage.getItem('currentPage')) || 1;
-
-// Move to next page if not on the last page
-if (currentPage < Math.ceil(Object.keys(projectData).length / 5)) {
-    currentPage++;
-    sessionStorage.setItem('currentPage', currentPage);
-    populateProjectList(currentPage);
-}
-}
-
-// Function to handle search
-function handleSearch() {
-let searchQuery = document.querySelector('.search').value.trim().toLowerCase();
-
-// Iterate over project data to find matching project
-for (let projectKey in projectData) {
-    let project = projectData[projectKey];
-    if (project.projectName.toLowerCase() === searchQuery) {
-        // Calculate the page number where the project is located
-        let projectIndex = parseInt(projectKey.split('_')[1]);
-        let pageNumber = Math.ceil(projectIndex / 5);
-
-        // Update the page to display the found project
-        sessionStorage.setItem('currentPage', pageNumber);
-        populateProjectList(pageNumber);
-        return; // Exit the function after finding the project
+        // Redisplay the updated list of projects
+        displayProjects();
     }
-}
 
-// If project is not found, provide feedback to the user
-alert('Project not found.');
-}
+    // Function to handle page changes (next and previous)
+    function handlePageChange(direction) {
+        // Calculate the total number of pages
+        const totalPages = Math.ceil(projects.length / projectsPerPage);
 
-// Populate the project list on initial page load
-let currentPage = 1;
-sessionStorage.setItem('currentPage', currentPage);
-populateProjectList(currentPage);
+        // Update the current page number within the valid range
+        currentPage = Math.max(1, Math.min(currentPage + direction, totalPages));
 
-// Add event listeners to page navigation buttons
-document.querySelector('.page-back-btn').addEventListener('click', moveToPreviousPage);
-document.querySelector('.page-next-btn').addEventListener('click', moveToNextPage);
+        // Store the updated current page in sessionStorage
+        sessionStorage.setItem('current_page', currentPage);
 
-// Search functionality
-document.querySelector('.search').addEventListener('keypress', function(event) {
-if (event.key === 'Enter') {
-    let query = event.target.value.toLowerCase();
-    let projectKeys = Object.keys(projectData);
-    let foundProjectKey = projectKeys.find(key => projectData[key].projectName.toLowerCase() === query);
-    if (foundProjectKey) {
-        let foundIndex = projectKeys.indexOf(foundProjectKey);
-        let pageNumber = Math.floor(foundIndex / 5) + 1;
-        sessionStorage.setItem('currentPage', pageNumber);
-        populateProjectList(pageNumber);
-    } else {
-        console.log('Project not found.');
+        // Redisplay the projects for the new page
+        displayProjects();
     }
-}
+
+    // Function to handle search functionality
+    function handleSearch(event) {
+        // Check if the Enter key was pressed (keyCode 13) or (key 'Enter')
+        if (event.key === 'Enter' || event.keyCode === 13) {
+            // Get the search query from the search bar
+            const searchQuery = event.target.value.toLowerCase();
+
+            // Retrieve the projects from sessionStorage
+            const archivedProjects = JSON.parse(sessionStorage.getItem('archived_projects'));
+
+            // Find the page number where the first matching project is located
+            let pageNumber = 1;
+            let found = false;
+            for (let i = 0; i < archivedProjects.length; i++) {
+                const [key, project] = archivedProjects[i];
+                if (project.projectName.toLowerCase().includes(searchQuery)) {
+                    pageNumber = Math.ceil((i + 1) / projectsPerPage);
+                    found = true;
+                    break;
+                }
+            }
+
+            // If no matching project was found, show an alert
+            if (!found) {
+                alert('No matching project found.');
+                return;
+            }
+
+            // Update the current page number in sessionStorage
+            currentPage = pageNumber;
+            sessionStorage.setItem('current_page', currentPage);
+
+            // Redisplay the filtered projects
+            displayProjects();
+        }
+    }
+
+    // Event listener for the 'Page Back' button
+    document.querySelector('.page-back-btn').addEventListener('click', () => handlePageChange(-1));
+
+    // Event listener for the 'Next Page' button
+    document.querySelector('.page-next-btn').addEventListener('click', () => handlePageChange(1));
+
+    // Event listener for the search bar input
+    document.getElementById('search-bar').addEventListener('keyup', handleSearch);
+
+    // Add an event listener for the 'load' event to call loadProjects when the page is reloaded
+    window.addEventListener('load', loadProjects);
+
+    // Export functions for testing or external use
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = { loadProjects, displayProjects, handlePageChange, handleSearch, deleteProject };
+    }
 });
-
-// Exporting functions for testing
-module.exports = {populateProjectList, moveToPreviousPage, moveToNextPage, handleSearch};
