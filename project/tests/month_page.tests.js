@@ -2,8 +2,18 @@ const { JSDOM } = require('jsdom');
 const fs = require('fs');
 const path = require('path');
 
+const baseDir = path.resolve(__dirname, '../monthlyPage');
+
+// Resolve and normalize the file path
+const filePath = path.normalize(path.join(baseDir, 'month_page.html'));
+
+// Ensure the file path is within the expected directory
+if (!filePath.startsWith(baseDir)) {
+    throw new Error('Invalid file path');
+}
+
 // Load the HTML file into a JSDOM instance
-const html = fs.readFileSync(path.resolve(__dirname, '../monthlyPage/month_page.html'), 'utf8');
+const html = fs.readFileSync(filePath, 'utf8');
 const dom = new JSDOM(html, { runScripts: "dangerously", resources: "usable" });
 const { window } = dom;
 const { document } = window;
