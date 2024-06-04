@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             projData = JSON.parse(projData);
             
             // Filter projects to include only non-active ones
-            projects = Object.entries(projData.project_data).filter(([key, project]) => !project.active);
+            projects = Object.entries(projData.project_data).filter(([_, project]) => !project.active);
             
             // Store the filtered projects in sessionStorage
             sessionStorage.setItem("archived_projects", JSON.stringify(projects));
@@ -53,25 +53,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Iterate over each project and create a list item for it
         paginatedProjects.forEach(([key, project]) => {
+            // Create list item
             let listItem = document.createElement('li');
             listItem.classList.add('project');
-            listItem.innerHTML = `
-                <span>${project.projectName}</span>
-                <button class="delete-btn">Delete</button>
-            `;
+
+            // Create span element for project name
+            let projectNameSpan = document.createElement('span');
+            projectNameSpan.textContent = project.projectName;
+            listItem.appendChild(projectNameSpan);
+
+            // Create delete button
+            let deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.classList.add('delete-btn');
 
             // Add event listener for delete button
-            listItem.querySelector('.delete-btn').addEventListener('click', (event) => {
+            deleteButton.addEventListener('click', (event) => {
                 event.stopPropagation(); // Prevent triggering the project click event
                 deleteProject(key);
             });
+
+            // Append delete button to list item
+            listItem.appendChild(deleteButton);
 
             // Add event listener for project item click
             listItem.addEventListener('click', () => {
                 let projData = JSON.parse(localStorage.getItem("project_data"));
                 projData.current_project = key;
                 localStorage.setItem('project_data', JSON.stringify(projData));
-                window.location.href = "../projects/projectHomePage/project_home_page.html";
+                window.location.href = escape("../projects/projectHomePage/project_home_page.html");
             });
 
             // Append the list item to the project list
@@ -82,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to delete a project
     function deleteProject(projectKey) {
         // Remove the project from the projects array
-        projects = projects.filter(([key, project]) => key !== projectKey);
+        projects = projects.filter(([key, _]) => key !== projectKey);
         
         // Update sessionStorage with the modified projects array
         sessionStorage.setItem('archived_projects', JSON.stringify(projects));
@@ -90,11 +100,16 @@ document.addEventListener('DOMContentLoaded', function () {
         // Retrieve the project data from localStorage
         let projData = JSON.parse(localStorage.getItem("project_data"));
 
-        // Delete the project from the project data object
-        delete projData.project_data[projectKey];
+        // Create a new object without the projectKey property
+        const updatedProjectData = Object.keys(projData.project_data).reduce((acc, key) => {
+            if (key !== projectKey) {
+                acc[key] = projData.project_data[key];
+            }
+            return acc;
+        }, {});
 
         // Update localStorage with the modified project data
-        localStorage.setItem('project_data', JSON.stringify(projData));
+        localStorage.setItem('project_data', JSON.stringify({ ...projData, project_data: updatedProjectData }));
 
         // Redisplay the updated list of projects
         displayProjects();
@@ -129,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let pageNumber = 1;
             let found = false;
             for (let i = 0; i < archivedProjects.length; i++) {
-                const [key, project] = archivedProjects[i];
+                const [_, project] = archivedProjects[i];
                 if (project.projectName.toLowerCase().includes(searchQuery)) {
                     pageNumber = Math.ceil((i + 1) / projectsPerPage);
                     found = true;

@@ -84,7 +84,7 @@ describe('Archive Page Tests', () => {
     const currentPageNumber = await page.evaluate(() => sessionStorage.getItem('current_page'));
 
     // Verify that the current page number matches the expected value
-    expect(parseInt(currentPageNumber)).toBe(2);
+    expect(parseInt(currentPageNumber, 10)).toBe(2);
 
     // Get the number of projects displayed on the page
     const numProjects = await page.$$eval('.project-list .project', projects => projects.length);
@@ -111,7 +111,7 @@ describe('Archive Page Tests', () => {
     const currentPageNumber = await page.evaluate(() => sessionStorage.getItem('current_page'));
 
     // Verify that the current page number matches the expected value
-    expect(parseInt(currentPageNumber)).toBe(1);
+    expect(parseInt(currentPageNumber, 10)).toBe(1);
 
     // Get the number of projects displayed on the page
     const numProjects = await page.$$eval('.project-list .project', projects => projects.length);
@@ -159,8 +159,8 @@ describe('Archive Page Tests', () => {
     const expectedPageNumber = Math.floor(projectIndex / projectsPerPage) + 1;
 
     // Verify that the current page number matches the expected value
-    expect(parseInt(currentPageNumber)).toBe(expectedPageNumber);
-
+    expect(parseInt(currentPageNumber, 10)).toBe(expectedPageNumber);
+    
     // Clear the search bar
     await page.evaluate(() => {
       document.getElementById('search-bar').value = '';
