@@ -2,18 +2,8 @@ const { JSDOM } = require('jsdom');
 const fs = require('fs');
 const path = require('path');
 
-const baseDir = path.resolve(__dirname, '../monthlyPage');
-
-// Resolve and normalize the file path
-const filePath = path.normalize(path.join(baseDir, 'month_page.html'));
-
-// Ensure the file path is within the expected directory
-if (!filePath.startsWith(baseDir)) {
-    throw new Error('Invalid file path');
-}
-
 // Load the HTML file into a JSDOM instance
-const html = fs.readFileSync(filePath, 'utf8');
+const html = fs.readFileSync(path.resolve(__dirname, '../monthlyPage/month_page.html'), 'utf8');
 const dom = new JSDOM(html, { runScripts: "dangerously", resources: "usable" });
 const { window } = dom;
 const { document } = window;
@@ -56,21 +46,30 @@ describe('Calendar Widget', () => {
         const loadedDate = document.querySelector('.calendar h3').textContent;
         const expectedDate = currentDate.toDateString();
 
+        console.log('Loaded Date:', loadedDate);
+        console.log('Expected Date:', expectedDate);
+
         expect(loadedDate).toBe(expectedDate);
     });
 
     test('should navigate back and forth through the calendar', () => {
         const initialDate = document.querySelector('.calendar h3').textContent;
 
+        console.log('Initial Date:', initialDate);
+
         // Simulate clicking the next button
         nextButton.click();
         const nextDate = document.querySelector('.calendar h3').textContent;
+
+        console.log('Date after clicking next:', nextDate);
 
         expect(nextDate).not.toBe(initialDate);
 
         // Simulate clicking the prev button
         prevButton.click();
         const prevDate = document.querySelector('.calendar h3').textContent;
+
+        console.log('Date after clicking prev:', prevDate);
 
         expect(prevDate).toBe(initialDate);
     });
