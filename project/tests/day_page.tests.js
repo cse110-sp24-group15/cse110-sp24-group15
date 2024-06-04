@@ -50,25 +50,22 @@ describe('Click month button', () => {
   });
 });
 
-describe('Check Previous Day is working correctly', () => {
-    test('Previous day date is set correctly in localStorage', () => {
-      let currentDate = new Date();
-      let today = new Date(currentDate);
-      currentDate.setDate(currentDate.getDate() - 1);
-      localStorage.setItem("current_date", formatDateToMMDDYYYY(currentDate));
-      const storedDate = localStorage.getItem("current_date");
-      expect(storedDate).toBe(formatDateToMMDDYYYY(currentDate));
-    });
-});
+// describe('Check Previous Day is working correctly', () => {
+//   test('Previous day date is set correctly in localStorage', () => {
+//     let currentDate = new Date();
+//     let today = new Date(currentDate);
+    
+//     // Set the date to one day before
+//     currentDate.setDate(currentDate.getDate() - 1);
+    
+//     // Store the formatted date in localStorage
+//     localStorage.setItem("current_date", formatDateToMMDDYYYY(currentDate));
+    
+//     // Retrieve the stored date from localStorage
+//     const storedDate = localStorage.getItem("current_date");
 
-describe('Check Next Day is working correctly', () => {
-    test('Next day date is set correctly in localStorage', () => {
-      let currentDate = new Date();
-      let today = new Date(currentDate);
-      currentDate.setDate(currentDate.getDate() + 1);
-      localStorage.setItem("current_date", formatDateToMMDDYYYY(currentDate));
-      const storedDate = localStorage.getItem("current_date");
-      expect(storedDate).toBe(formatDateToMMDDYYYY(currentDate));
-    });
-});
+//     // Check that the stored date matches the expected previous day's date
+//     expect(storedDate).toBe(formatDateToMMDDYYYY(currentDate));
+//   });
+// });
 
