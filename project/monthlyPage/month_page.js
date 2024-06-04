@@ -21,12 +21,6 @@ let date = new Date();
 let month = date.getMonth();
 let year = date.getFullYear();
 
-function sanitize(input) {
-    const element = document.createElement('div');
-    element.textContent = input;
-    return element.innerHTML;
-}
-
 function renderCalendar() {
     const start = new Date(year, month, 1).getDay();
     const endDate = new Date(year, month + 1, 0).getDate();
@@ -61,7 +55,7 @@ function renderCalendar() {
         dates.appendChild(li);
     }
 
-    header.textContent = `${sanitize(months[month])} ${sanitize(year)}`;
+    header.textContent = `${months[month]} ${year}`;
 }
 
 navs.forEach((nav) => {
@@ -85,6 +79,5 @@ navs.forEach((nav) => {
         renderCalendar();
     });
 });
-
 
 renderCalendar();
