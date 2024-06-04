@@ -55,7 +55,7 @@ function renderCalendar() {
         dates.appendChild(li);
     }
 
-    header.textContent = `${months[month]} ${year}`;
+    header.textContent = `${months[String(month)]} ${String(year)}`;
 }
 
 navs.forEach((nav) => {
