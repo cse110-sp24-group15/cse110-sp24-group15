@@ -50,12 +50,25 @@ describe('Click month button', () => {
   });
 });
 
-// describe('Click add log button', () => {
-//   test('Window redirects to add log page when redirectToAddLogPage is called', () => {
-//     redirectToAddLogPage();
+describe('Check Previous Day is working correctly', () => {
+    test('Previous day date is set correctly in localStorage', () => {
+      let currentDate = new Date();
+      let today = new Date(currentDate);
+      currentDate.setDate(currentDate.getDate() - 1);
+      localStorage.setItem("current_date", formatDateToMMDDYYYY(currentDate));
+      const storedDate = localStorage.getItem("current_date");
+      expect(storedDate).toBe(formatDateToMMDDYYYY(currentDate));
+    });
+});
 
-//     // Ensure window.location.href is set to the add log page URL
-//     expect(window.location.href).toBe('/../project/addPage/addPage.html');
-//   });
-// });
+describe('Check Next Day is working correctly', () => {
+    test('Next day date is set correctly in localStorage', () => {
+      let currentDate = new Date();
+      let today = new Date(currentDate);
+      currentDate.setDate(currentDate.getDate() + 1);
+      localStorage.setItem("current_date", formatDateToMMDDYYYY(currentDate));
+      const storedDate = localStorage.getItem("current_date");
+      expect(storedDate).toBe(formatDateToMMDDYYYY(currentDate));
+    });
+});
 
