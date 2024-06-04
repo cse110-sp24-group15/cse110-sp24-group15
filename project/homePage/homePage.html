@@ -37,4 +37,19 @@
         <button>Footer Button</button>
     </footer>
 </body>
+<script>
+    // Function to search projects
+function searchProjects(searchTerm) {
+    const projectElements = document.querySelectorAll('.projects li');
+    projectElements.forEach(projectElement => {
+        const projectName = projectElement.querySelector('h3').textContent.toLowerCase();
+        if (projectName.includes(searchTerm.toLowerCase())) {
+            projectElement.style.display = 'block';
+        } else {
+            projectElement.style.display = 'none';
+        }
+    });
+}
+
+</script>
 </html>

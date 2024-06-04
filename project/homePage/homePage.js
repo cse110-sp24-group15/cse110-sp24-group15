@@ -16,7 +16,7 @@ const dummyProjectData = {
             projectTag: "Tag 2",
             projectContributors: "Contributor 3, Contributor 4",
             projectDescription: "Description for Project 2",
-            active: false,
+            active: true,
             logs: {},
             BranchLink: "https://example.com/project2",
             TodoList: {}
@@ -70,13 +70,19 @@ function createProjectElement(project, projectId) {
     const archiveButton = document.createElement('button');
     archiveButton.textContent = 'Archive';
     archiveButton.classList.add('archive-btn');
-    archiveButton.addEventListener('click', () => archiveProject(projectId));
+    archiveButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        archiveProject(projectId);
+    });
     projectActions.appendChild(archiveButton);
 
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.classList.add('delete-btn');
-    deleteButton.addEventListener('click', () => deleteProject(projectId));
+    deleteButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        deleteProject(projectId);
+    });
     projectActions.appendChild(deleteButton);
 
     projectElement.appendChild(projectActions);
@@ -93,6 +99,7 @@ function createProjectElement(project, projectId) {
 
 // Function to archive a project
 function archiveProject(projectId) {
+    console.log(projectId);
     const projectData = JSON.parse(localStorage.getItem('projectData'));
     projectData.project_data[projectId].active = false;
     localStorage.setItem('projectData', JSON.stringify(projectData));
@@ -101,24 +108,11 @@ function archiveProject(projectId) {
 
 // Function to delete a project
 function deleteProject(projectId) {
+    console.log(projectId);
     const projectData = JSON.parse(localStorage.getItem('projectData'));
     delete projectData.project_data[projectId];
     localStorage.setItem('projectData', JSON.stringify(projectData));
     renderProjects();
 }
-
-// Function to search projects
-function searchProjects(searchTerm) {
-    const projectElements = document.querySelectorAll('.projects li');
-    projectElements.forEach(projectElement => {
-        const projectName = projectElement.querySelector('h3').textContent.toLowerCase();
-        if (projectName.includes(searchTerm.toLowerCase())) {
-            projectElement.style.display = 'block';
-        } else {
-            projectElement.style.display = 'none';
-        }
-    });
-}
-
 // Render the projects on page load
 renderProjects();
