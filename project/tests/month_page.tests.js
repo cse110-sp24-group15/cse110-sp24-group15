@@ -3,7 +3,19 @@ const fs = require('fs');
 const path = require('path');
 
 // Load the HTML file into a JSDOM instance
-const html = fs.readFileSync(path.resolve(__dirname, '../monthlyPage/month_page.html'), 'utf8');
+const baseDir = path.resolve(__dirname, '../monthlyPage');
+
+// Resolve and normalize the file path
+const filePath = path.join(baseDir, 'month_page.html');
+
+// Ensure the file path is within the expected directory
+const normalizedPath = path.normalize(filePath);
+if (!normalizedPath.startsWith(baseDir)) {
+    throw new Error('Invalid file path');
+}
+
+// Load the HTML file into a JSDOM instance
+const html = fs.readFileSync(normalizedPath, 'utf8');
 const dom = new JSDOM(html, { runScripts: "dangerously", resources: "usable" });
 const { window } = dom;
 const { document } = window;
