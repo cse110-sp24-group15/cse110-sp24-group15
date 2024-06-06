@@ -4,10 +4,12 @@ const path = require('path');
 
 // Define constants for the base directory and HTML file path
 const BASE_DIR = path.resolve(__dirname, '../monthlyPage');
-const HTML_FILE = path.join(BASE_DIR, 'month_page.html');
+const HTML_FILE = 'month_page.html';
+
+const fullPath = path.resolve(BASE_DIR, HTML_FILE);
 
 // Load the HTML file into a JSDOM instance
-const html = fs.readFileSync(HTML_FILE, 'utf8');
+const html = fs.readFileSync(fullPath, 'utf8');
 const dom = new JSDOM(html, { runScripts: "dangerously", resources: "usable" });
 const { window } = dom;
 const { document } = window;
