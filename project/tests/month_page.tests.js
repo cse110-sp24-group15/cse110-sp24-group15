@@ -134,7 +134,7 @@ describe('Calendar Widget', () => {
 
     test('should load the current date correctly', () => {
         const loadedDate = document.querySelector('.calendar h3').textContent;
-        const expectedDate = currentDate.toDateString();
+        const expectedDate = `${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
 
         console.log('Loaded Date:', loadedDate);
         console.log('Expected Date:', expectedDate);
