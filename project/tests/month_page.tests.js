@@ -2,11 +2,20 @@ const { JSDOM } = require('jsdom');
 const fs = require('fs');
 const path = require('path');
 
-// Define constants for the base directory and HTML file path
-const HTML_FILE_PATH = path.resolve(__dirname, '../monthlyPage/month_page.html');
+// Define a fixed base directory and HTML file path
+const BASE_DIR = path.resolve(__dirname, '../monthlyPage');
+const HTML_FILE = 'month_page.html'; // Simple file name
+
+// Construct and normalize the full path
+const fullPath = path.normalize(path.join(BASE_DIR, HTML_FILE));
+
+// Ensure the full path is within the expected base directory
+if (!fullPath.startsWith(BASE_DIR)) {
+    throw new Error('Invalid file path');
+}
 
 // Load the HTML file into a JSDOM instance
-const html = fs.readFileSync(HTML_FILE_PATH, 'utf8');
+const html = fs.readFileSync(fullPath, 'utf8');
 const dom = new JSDOM(html, { runScripts: "dangerously", resources: "usable" });
 const { window } = dom;
 const { document } = window;
