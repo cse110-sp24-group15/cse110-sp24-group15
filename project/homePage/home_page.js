@@ -36,10 +36,12 @@ function renderProjects() {
 
     const projectData = JSON.parse(localStorage.getItem('projectData')).project_data;
     for (const projectId in projectData) {
-        const project = projectData[projectId];
-        if (project.active) {
-            const projectElement = createProjectElement(project, projectId);
-            projectsList.appendChild(projectElement);
+        if (Object.prototype.hasOwnProperty.call(projectData, projectId)) {
+            let project = projectData[parseInt(projectId)];
+            if (project.active) {
+                const projectElement = createProjectElement(project, projectId);
+                projectsList.appendChild(projectElement);
+            }
         }
     }
 }
@@ -99,19 +101,17 @@ function createProjectElement(project, projectId) {
 
 // Function to archive a project
 function archiveProject(projectId) {
-    console.log(projectId);
-    const projectData = JSON.parse(localStorage.getItem('projectData'));
-    projectData.project_data[projectId].active = false;
-    localStorage.setItem('projectData', JSON.stringify(projectData));
+    let projectDataCopy = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('projectData'))));
+    projectDataCopy.project_data[parseInt(projectId)].active = false;
+    localStorage.setItem('projectData', JSON.stringify(projectDataCopy));
     renderProjects();
 }
 
 // Function to delete a project
 function deleteProject(projectId) {
-    console.log(projectId);
-    const projectData = JSON.parse(localStorage.getItem('projectData'));
-    delete projectData.project_data[projectId];
-    localStorage.setItem('projectData', JSON.stringify(projectData));
+    let projectDataCopy = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('projectData'))));
+    delete projectDataCopy.project_data[parseInt(projectId)];
+    localStorage.setItem('projectData', JSON.stringify(projectDataCopy));
     renderProjects();
 }
 // Render the projects on page load
