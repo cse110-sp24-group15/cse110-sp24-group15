@@ -6,14 +6,8 @@ const path = require('path');
 const BASE_DIR = path.resolve(__dirname, '../monthlyPage');
 const HTML_FILE = path.join(BASE_DIR, 'month_page.html');
 
-// Ensure the file path is within the expected directory
-const normalizedPath = path.normalize(HTML_FILE);
-if (!normalizedPath.startsWith(BASE_DIR)) {
-    throw new Error('Invalid file path');
-}
-
 // Load the HTML file into a JSDOM instance
-const html = fs.readFileSync(normalizedPath, 'utf8');
+const html = fs.readFileSync(HTML_FILE, 'utf8');
 const dom = new JSDOM(html, { runScripts: "dangerously", resources: "usable" });
 const { window } = dom;
 const { document } = window;
