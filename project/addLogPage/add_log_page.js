@@ -21,6 +21,7 @@ function validateForm(log_title, log_time, log_contributors, log_description) {
 /**
  * Handles the submission of the form by creating a new log entry and saving it to localStorage.
  */
+
 function makeSubmission() {
   // Get the values from the form inputs
   let log_title = document.getElementById("log-title").value;
@@ -44,16 +45,29 @@ function makeSubmission() {
       logs = Object.values(logs);
     }
 
-    // Split the current date into an array of [Month, Day, Year]
-    let curr_date = proj_data["current_date"].split("/");
+  function formatDateToMMDDYYYY(date) {
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const yyyy = date.getFullYear();      
+    return `${mm}/${dd}/${yyyy}`;
+  }
+  let curr_date = new Date();
+  const selectedDate = localStorage.getItem('current_date');
+  if (selectedDate != null) {
+      curr_date = new Date(selectedDate);
+  }
+  localStorage.setItem("current_date", formatDateToMMDDYYYY(curr_date));
+  let month = curr_date.getMonth() + 1; // Months are zero-based
+  let day = curr_date.getDate();
+  let year = curr_date.getFullYear();
 
     // Create a new log entry
     let new_log = {
       data: log_description,
       time: log_time,
-      Month: curr_date[0],
-      day: curr_date[1],
-      Year: curr_date[2],
+      Month: month,
+      day: day,
+      Year: year,
       title: log_title,
       contributors: log_contributors,
       codeSnippet: log_code_snippet // Add the code snippet to the log entry

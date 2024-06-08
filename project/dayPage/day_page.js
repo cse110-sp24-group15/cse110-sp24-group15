@@ -1,4 +1,3 @@
-// Run the init() function when the page has loaded
 window.addEventListener("DOMContentLoaded", init);
 
 function init() {
@@ -46,7 +45,7 @@ function calendarScript() {
     function getDayOfWeek(date) {
         const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         const dayIndex = date.getDay();
-        return daysOfWeek[dayIndex]
+        return daysOfWeek[dayIndex];
     }
 
     function updateCalendar() {
@@ -56,13 +55,13 @@ function calendarScript() {
 
     function updateEvents() {
         let jsonString = localStorage.getItem('project_data');
-        let logs;
+        let logs = [];
         if (jsonString) {
             let jsonObject = JSON.parse(jsonString);
-            logs = jsonObject.logs;
-        } else {
-            logs = [];
+            const currentProject = jsonObject.current_project;
+            logs = jsonObject.project_data[currentProject].logs || [];
         }
+        //logs is updated correctly
 
         let currentDateStr = localStorage.getItem('current_date');
         let currentDate = new Date(currentDateStr);
@@ -81,17 +80,15 @@ function calendarScript() {
         localStorage.setItem("current_day_data", JSON.stringify(current_logs));
     }
 
-    function updatePage(){
+    function updatePage() {
         let jsonString = localStorage.getItem('current_day_data');
         let jsonObject = JSON.parse(jsonString);
-        const dayCalendarTitle = document.getElementById('DayCalendarTitle');
-        const dayCalendarTime = document.getElementById('DayCalendarTime');
+        const dayCalendarTitle = document.getElementById('day-calendar-title');
+        const dayCalendarTime = document.getElementById('day-calendar-time');
 
-        // Clear previous events
         dayCalendarTitle.innerHTML = "Title";
         dayCalendarTime.innerHTML = "Time";
 
-        // Display current logs
         jsonObject.forEach(log => {
             let titleDiv = document.createElement('div');
             titleDiv.textContent = log.title;
