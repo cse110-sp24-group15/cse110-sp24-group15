@@ -237,9 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
             element.textContent = defaultText;
         }
     };
-
-    let currentDate = new Date();
-    localStorage.setItem("current_date", formatDateToMMDDYYYY(currentDate));
     setDefaultText('.project-text', 'PROJECT NAME');
     setDefaultText('.project-todo-list', 'Enter your markdown here...\n\n\n');
     setDefaultText('.project-branch-link', 'Enter your link to branch/workspace here...\n\n\n');
