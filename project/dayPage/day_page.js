@@ -24,7 +24,9 @@ function calendarScript() {
     const nextDayBtn = document.getElementById('next-day-btn');
 
     let currentDate = new Date();
-    const selectedDate = localStorage.getItem('current_date');
+    const selectedDate = JSON.parse(localStorage.getItem('project_data')).current_date;
+    console.log(selectedDate)
+
     if (selectedDate != null) {
         currentDate = new Date(selectedDate);
     }
@@ -61,6 +63,7 @@ function calendarScript() {
             const currentProject = jsonObject.current_project;
             logs = jsonObject.project_data[currentProject].logs || [];
         }
+        
         //logs is updated correctly
 
         let currentDateStr = localStorage.getItem('current_date');

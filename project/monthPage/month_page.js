@@ -42,7 +42,7 @@ function renderCalendar() {
         }
         li.textContent = i;
 
-        let dateId = `${month}/${i}/${year}`
+        let dateId = `${month+1}/${i}/${year}`
         li.textContent = i;
         li.setAttribute('date-id', dateId);
         li.addEventListener('click', () => setDateAndNavigate(dateId));
