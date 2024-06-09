@@ -207,3 +207,19 @@ main {
     align-items: center;
     margin-left: 10px;
 }
+
+/* Record Presentation */
+.title, .time , .description { 
+    width: 100%; 
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0 0 0 / 30%);
+    padding: 10px;
+    margin: 5px 0;
+    box-sizing: border-box;
+
+    text-align: center;
+    word-wrap: break-word;
+    background-color: rgba(209 207 207 / 40%);
+
+    border-radius: 10px;
+}

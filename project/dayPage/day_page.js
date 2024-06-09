@@ -63,10 +63,10 @@ function calendarScript() {
             const currentProject = jsonObject.current_project;
             logs = jsonObject.project_data[currentProject].logs || [];
         }
-        
+ 
         //logs is updated correctly
 
-        let currentDateStr = localStorage.getItem('current_date');
+        let currentDateStr = JSON.parse(localStorage.getItem('project_data')).current_date;
         let currentDate = new Date(currentDateStr);
         let current_logs = [];
 
@@ -88,6 +88,7 @@ function calendarScript() {
         let jsonObject = JSON.parse(jsonString);
         const dayCalendarTitle = document.getElementById('day-calendar-title');
         const dayCalendarTime = document.getElementById('day-calendar-time');
+        const dayCalendarDescription = document.getElementById('day-calendar-description');
 
         dayCalendarTitle.innerHTML = "Title";
         dayCalendarTime.innerHTML = "Time";
@@ -95,17 +96,29 @@ function calendarScript() {
         jsonObject.forEach(log => {
             let titleDiv = document.createElement('div');
             titleDiv.textContent = log.title;
+            titleDiv.classList.add("title");
             dayCalendarTitle.appendChild(titleDiv);
 
             let timeDiv = document.createElement('div');
             timeDiv.textContent = log.time;
+            timeDiv.classList.add("time");
             dayCalendarTime.appendChild(timeDiv);
+
+            let descriptionDiv = document.createElement('div');
+            descriptionDiv.textContent = log.data;
+            descriptionDiv .classList.add("description");
+            dayCalendarDescription.appendChild(descriptionDiv);
+
         });
     }
 
     prevDayBtn.addEventListener('click', () => {
         currentDate.setDate(currentDate.getDate() - 1);
-        localStorage.setItem("current_date", formatDateToMMDDYYYY(currentDate));
+
+        let jsonString = JSON.parse(localStorage.getItem('project_data'));
+        jsonString.current_date = formatDateToMMDDYYYY(currentDate);
+        localStorage.setItem("project_data", JSON.stringify(jsonString));
+
         updateCalendar();
         updateEvents();
         updatePage();
@@ -113,7 +126,11 @@ function calendarScript() {
 
     nextDayBtn.addEventListener('click', () => {
         currentDate.setDate(currentDate.getDate() + 1);
-        localStorage.setItem("current_date", formatDateToMMDDYYYY(currentDate));
+
+        let jsonString = JSON.parse(localStorage.getItem('project_data'));
+        jsonString.current_date = formatDateToMMDDYYYY(currentDate);
+        localStorage.setItem("project_data", JSON.stringify(jsonString));
+
         updateCalendar();
         updateEvents();
         updatePage();
