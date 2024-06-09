@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to handle search functionality
     function handleSearch(event) {
         const searchQuery = event.target.value.toLowerCase();
-        const filteredProjects = projects.filter(([key, project]) =>
+        const filteredProjects = projects.filter(([, project]) =>
             project.projectName.toLowerCase().includes(searchQuery)
         );
 
