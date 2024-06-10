@@ -13,7 +13,7 @@ jobs:
         uses: codacy/codacy-coverage-reporter-action@v1.3.0
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: /project/coverage/lcov.info
+          coverage-reports: /github/workspace/project/coverage/lcov.info
           #SEE https://github.com/codacy/codacy-coverage-reporter-action
           # TODO: ADD <PATH_TO_REPORT>
           # SEE https://docs.codacy.com/coverage-reporter/#generating-coverage
