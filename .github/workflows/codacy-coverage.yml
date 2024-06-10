@@ -1,14 +1,19 @@
-name: 'coverage'
+name: Codacy Coverage Reporter
 on:
   pull_request:
       branches:
           - main
 jobs:
-    coverage:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: Run codacy-coverage 
-              uses: ArtiomTr/jest-coverage-report-action@v2
-              with:
-                project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+  codacy-coverage-reporter:
+    runs-on: ubuntu-latest
+    name: codacy-coverage-reporter
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@v1.3.0
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: <PATH_TO_REPORT>
+          #SEE https://github.com/codacy/codacy-coverage-reporter-action
+          # TODO: ADD <PATH_TO_REPORT>
+          # SEE https://docs.codacy.com/coverage-reporter/#generating-coverage
