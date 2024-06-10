@@ -1,19 +1,33 @@
 name: Codacy Coverage Reporter
+
 on:
   pull_request:
-      branches:
-          - main
+    branches:
+      - main
+
 jobs:
   codacy-coverage-reporter:
     runs-on: ubuntu-latest
     name: codacy-coverage-reporter
     steps:
       - uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests and generate coverage report
+        run: npm test -- --coverage
+
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@v1.3.0
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: /project/coverage/lcov.info
+          coverage-reports: coverage/lcov.info
           #SEE https://github.com/codacy/codacy-coverage-reporter-action
           # TODO: ADD <PATH_TO_REPORT>
           # SEE https://docs.codacy.com/coverage-reporter/#generating-coverage
